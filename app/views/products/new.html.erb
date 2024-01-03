@@ -1,0 +1,22 @@
+<div class="form-wrapper p-5">
+  <h3> New Product Listing</h3>
+  <br>
+  <%= simple_form_for(@product) do |f| %>
+    <%= f.input :name %>
+    <%= f.input :description %>
+    <%= f.input :quantity %>
+    <%= f.input :brand %>
+    <%= f.input :size %>
+    <%= f.input :condition %>
+    <%= f.input :year %>
+    <%= f.input :color %>
+    <%= f.input :material %>
+    <%= f.input :measurements %>
+    <%= f.input :price %>
+    <%= f.input :quantity %>
+    <%= f.input :delivery_fee %>
+    <%= f.input :photos, as: :file, input_html: { multiple: true } %>
+    <br>
+    <%= f.submit class: "button primary-button wide-button" %>
+  <% end %>
+</div>

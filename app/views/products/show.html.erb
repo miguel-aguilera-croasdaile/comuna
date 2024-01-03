@@ -1,0 +1,70 @@
+<div class="d-flex flex-wrap">
+  <div class="col-12 col-md-6 p-4 p-md-5">
+    <div id="productCarousel" class="carousel carousel-dark slide" data-bs-ride="carousel">
+      <div class="carousel-inner">
+        <% @product.photos.each_with_index do |photo, index| %>
+          <div class="carousel-item <%= "active " if index == 0 %>">
+            <%= cl_image_tag photo.key, class: "product-show-image", :width=>1200, :crop=>"lfill" %>
+          </div>
+        <% end %>
+      </div>
+      <button class="carousel-control-prev" type="button" data-bs-target="#productCarousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#productCarousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
+    </div>
+  </div>
+  <div class="col-12 col-md-6 p-4 p-md-5">
+    <div class="d-flex justify-content-between">
+      <h5> <%= @product.name %> </h5>
+      <% if @product.available? %>
+        <h5> <%= humanized_money_with_symbol(@product.price) %> </h5>
+      <% else %>
+        <h5> <span class="badge badge-danger"> SOLD </span> </h5>
+      <% end %>
+    </div>
+    <br>
+    <div data-controller="cart" class="mt-5">
+      <button data-action="click->cart#fire" class="btn btn-outline-primary"> Add to Cart </button>
+    </div>
+    <%# <% if @product.available? %>
+    <%# <%= form_tag cart_cart_items_path(@cart) do %>
+      <%# <%= hidden_field_tag 'product_id', @product.id %>
+      <%# <%= submit_tag 'Add to Cart', class: 'button primary-button wide-button' %>
+      <%# <% end %>
+      <%# <% end %>
+      <hr>
+      <% unless @product.description.blank? %>
+        <p> <%= simple_format @product.description %> </p>
+        <hr>
+      <% end %>
+      <% unless @product.brand.blank? %>
+        <p> Brand: <%= @product.brand %>  </p>
+      <% end %>
+      <% unless @product.material.blank? %>
+        <p> Material: <%= @product.material %>  </p>
+      <% end %>
+      <% unless @product.year.blank? %>
+        <p> Year: <%= @product.year %>  </p>
+      <% end %>
+      <% unless @product.size.blank? %>
+        <p> Size: <%= @product.size %>  </p>
+      <% end %>
+      <% unless @product.color.blank? %>
+        <p> Color: <%= @product.color %>  </p>
+      <% end %>
+      <% unless @product.condition.blank? %>
+        <p> Condition: <%= @product.condition %>  </p>
+      <% end %>
+      <% unless @product.measurements.blank? %>
+        <p> Measurements: <%= @product.measurements %>  </p>
+      <% end %>
+      <hr>
+      <p>All vintages sales are final.</p>
+      <p>With a PayPal account, you're eligible for Purchase Protection and Rewards. </p>
+    </div>
+  </div>

@@ -1,38 +1,127 @@
-<div class="navbar navbar-expand-sm navbar-light navbar-lewagon">
-  <div class="container-fluid">
-    <%= link_to "#", class: "navbar-brand" do %>
-      <%= image_tag "https://raw.githubusercontent.com/lewagon/fullstack-images/master/uikit/logo.png" %>
-    <% end %>
-
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto">
-        <% if user_signed_in? %>
-          <li class="nav-item active">
-            <%= link_to "Home", "#", class: "nav-link" %>
-          </li>
-          <li class="nav-item">
-            <%= link_to "Messages", "#", class: "nav-link" %>
-          </li>
-          <li class="nav-item dropdown">
-          <a href="#" class="avatar" id="navbarDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <%= image_tag "https://kitt.lewagon.com/placeholder/users/ssaunier", class: "avatar", alt: "dropdown menu" %>
-          </a>
-            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-              <%= link_to "Action", "#", class: "dropdown-item" %>
-              <%= link_to "Another action", "#", class: "dropdown-item" %>
-              <%= link_to "Log out", destroy_user_session_path, data: {turbo_method: :delete}, class: "dropdown-item" %>
-            </div>
-          </li>
-        <% else %>
-          <li class="nav-item">
-            <%= link_to "Login", new_user_session_path, class: "nav-link" %>
-          </li>
+<%# Desktop Navbar%>
+<div class="navbar px-3 px-md-5">
+  <div class="navbar-left d-none d-md-flex flex-wrap align-items-center">
+    <%= link_to "comuna", root_path, class: "navbar-link title" %>
+  </div>
+  <div class="navbar-right d-none d-md-flex flex-wrap align-items-center">
+    <%= link_to "shop all", "/products", class: "navbar-link right" %>
+    <a class="navbar-link right" data-bs-toggle="collapse" href="#collapsingMenu" role="button" aria-expanded="false" aria-controls="collapsingMenu">
+      browse
+    </a>
+    <%= link_to "cart (#{@cart.cart_items.count})", "/cart", class: "navbar-link right" %>
+    <div class="navbar-link right">navbar</div>
+  </div>
+</div>
+<div class="special-sidebar d-none" data-cart-target="hideableElement">
+  <%= render "shared/cart", cart: @cart %>
+</div>
+<%# Desktop Dropdown Menu %>
+<div class="navbar-collapsing-menu collapse" id="collapsingMenu">
+  <div class="d-flex justify-content-between p-3 p-md-5">
+    <div class="navbar-left d-flex justify-content-start">
+      <div class="navbar-menu-item">
+        <%= link_to products_path do %>
+          <p class="no-margin"> <b>Browse All</b> </p>
         <% end %>
-      </ul>
+      </div>
+      <div class="navbar-menu-item">
+        <p> <b> Shop by Brand </b> </p>
+        <%= link_to products_path(brand: "Hanes") do %>
+          <p class="no-margin"> Hanes </p>
+        <% end %>
+        <%= link_to products_path(brand: "Gildan") do %>
+          <p class="no-margin"> Gildan </p>
+        <% end %>
+        <%= link_to products_path(brand: "Fruit of the Loom") do %>
+          <p class="no-margin"> Fruit of the Loom </p>
+        <% end %>
+        <%= link_to products_path(brand: "Screen Stars") do %>
+          <p class="no-margin"> Screen Stars </p>
+        <% end %>
+      </div>
+      <div class="navbar-menu-item">
+        <p> <b> Shop by Year </b> </p>
+        <%= link_to products_path(year: "1980s") do %>
+          <p class="no-margin"> 1980s </p>
+        <% end %>
+        <%= link_to products_path(year: "1990s") do %>
+          <p class="no-margin"> 1990s </p>
+        <% end %>
+        <%= link_to products_path(year: "2000s") do %>
+          <p class="no-margin"> 2000s </p>
+        <% end %>
+        <%= link_to products_path(year: "2010s") do %>
+          <p class="no-margin"> 2010s </p>
+        <% end %>
+      </div>
+      <div class="navbar-menu-item">
+        <p> <b> Shop by Size </b> </p>
+        <%= link_to products_path(size: "S") do %>
+          <p class="no-margin"> S </p>
+        <% end %>
+        <%= link_to products_path(size: "M") do %>
+          <p class="no-margin"> M </p>
+        <% end %>
+        <%= link_to products_path(size: "L") do %>
+          <p class="no-margin"> L </p>
+        <% end %>
+        <%= link_to products_path(size: "XL") do %>
+          <p class="no-margin"> XL </p>
+        <% end %>
+      </div>
+      <div class="navbar-menu-item">
+        <p> <b> Shop by Collection </b> </p>
+        <%= link_to products_path(size: "S") do %>
+          <p class="no-margin"> S </p>
+        <% end %>
+        <%= link_to products_path(size: "M") do %>
+          <p class="no-margin"> M </p>
+        <% end %>
+        <%= link_to products_path(size: "L") do %>
+          <p class="no-margin"> L </p>
+        <% end %>
+        <%= link_to products_path(size: "XL") do %>
+          <p class="no-margin"> XL </p>
+        <% end %>
+      </div>
+    </div>
+    <div class="navbar-right d-flex justify-content-end">
     </div>
   </div>
 </div>
+<%# Mobile Navbar %>
+<div class="navbar navbar-mobile d-flex d-md-none align-items-center justify-content-between">
+  <div class="sidebar-toggle">
+    <i class="navbar-mobile-link fa-solid fa-bars"></i>
+  </div>
+  <%= link_to "comuna", root_path, class: "navbar-link title" %>
+  <%= link_to cart_path do %>
+    <i class="navbar-mobile-link fa-solid fa-cart-shopping"></i>
+  <% end %>
+</div>
+<%# Mobile Sidebar %>
+<div class="sidebar d-block d-md-none" id="sidebar">
+  <div class="sidebar-header d-flex d-md-none align-items-center justify-content-end">
+    <div class="sidebar-toggle close-button">
+      <i class="navbar-mobile-link fas fa-times close-btn"></i>
+    </div>
+  </div>
+  <div class="sidebar-body">
+    <div class="navbar-menu-item">
+      <%= link_to products_path do %>
+        <p class="no-margin"> <b>Browse All</b> </p>
+      <% end %>
+    </div>
+  </div>
+</div>
+<script>
+  var toggleBtn = document.querySelector(".sidebar-toggle");
+  var sidebar = document.getElementById("sidebar");
+  var closeBtn = document.querySelector(".close-btn");
+  toggleBtn.addEventListener("click", function () {
+    sidebar.style.left = "0px"
+  });
+  closeBtn.addEventListener("click", function () {
+    sidebar.style.left = "-100vw"
+  });
+</script>

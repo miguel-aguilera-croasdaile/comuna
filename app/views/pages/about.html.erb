@@ -1,0 +1,11 @@
+<div class="section p-5">
+  <div class="col-12 d-flex justify-content-around text-align-center">
+    About
+  </div>
+</div>
+<div class="section px-5 py-2">
+  <% Faker::Lorem.paragraphs(10).each do |p| %>
+    <p><%= p %></p>
+  <% end %>
+</div>
+<%# <%= image_tag("2.png", width: 500) %>

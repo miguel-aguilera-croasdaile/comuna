@@ -1,6 +1,25 @@
-.alert {
+.notification {
   position: fixed;
-  bottom: 16px;
-  right: 16px;
+  top: 0;
+  width: 100%;
   z-index: 1000;
+  display: flex;
+  flex-wrap: wrap;
+  border-radius: 0px;
+  border: 0px;
+  min-height: 80px;
+  align-items: center;
+  padding: 0px 20px
+}
+
+.alert-warning{
+  background-color: red !important;
+  color: black;
+}
+
+.alert-button{
+  position: absolute;
+  right: 0;
+  padding: 10px;
+  margin: 10px;
 }

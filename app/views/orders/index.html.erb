@@ -1,0 +1,23 @@
+<div class="wrapper">
+  <div class="row">
+    <% @orders.each do |order| %>
+      <div class="card-wrapper col-12" data-turbo="false">
+        <%= link_to order_path(order) do %>
+          <div class="product-card">
+            <p>Order #<%= order.id %>
+              <% if order.status == "COMPLETED" %>
+                <p><span class="badge badge-success"><%= order.status %></span></p>
+              <% else %>
+                <p><span class="badge badge-alert"><%= order.status %></span></p>
+              <% end %>
+            </p>
+            <p><strong>ISSUED ON</strong> <%= order.created_at.to_date %></p>
+            <p><strong><%= order.order_items.count %> Items</strong> </p>
+            <p><%= order.price %></p>
+            <p><strong>ORDER STATUS:</strong> <%= order.status %></p>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</div>

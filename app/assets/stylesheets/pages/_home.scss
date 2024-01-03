@@ -1,1 +1,7 @@
-// Specific CSS for your home-page
+.banner{
+  min-height: 89vh;
+  width: 100%;
+  background-image: url("banner.webp");
+  background-position: bottom;
+  background-size: cover;
+}

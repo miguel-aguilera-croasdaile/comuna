@@ -10,3 +10,71 @@
 // Your CSS partials
 @import "components/index";
 @import "pages/index";
+
+// Graphical variables
+
+body {
+  min-height: 100vh;
+  background-color: $white;
+  color: $black;
+}
+
+.body {
+  min-height: 100vh;
+  padding: 0 !important;
+  padding-top: 80px !important;
+  position: relative;
+}
+
+.no-margin  {
+  margin: 0px;
+  p{margin: 0px};
+}
+
+.almost-white{
+  background-color: $almost-white;
+  border: 5px;
+  padding: 5px;
+}
+
+.badge{
+  padding: 10px;
+  border-radius: $border-radius;
+}
+
+.badge-success{
+  color: #008000;
+  background-color: #85d985;
+}
+
+.badge-alert {
+  color: #664f24;
+  background-color: #fff4de;
+  border-color: #ffeece;
+}
+
+.badge-danger{
+  color: #980a0d;
+  background-color: #ffcfd0;
+  border-color: #feb7b9;
+}
+
+.larger-text{
+  font-size: 120%;
+}
+
+.text-right{
+  text-align: right;
+}
+
+.mr-10px{
+  margin-right: 10px;
+}
+
+.full-width{
+  width: 100%;
+}
+
+.full-height{
+  min-height: 89vh;
+}

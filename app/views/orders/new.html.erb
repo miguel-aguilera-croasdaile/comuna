@@ -1,0 +1,126 @@
+<%# Collapsible Order Summary, Mobile Only %>
+<div class="d-block d-md-none col-12 col-md-6 p-4 p-md-5 almost-white">
+  <div class="full-width" data-bs-toggle="collapse"f="#collapsingSummary" role="button" aria-expanded="false" aria-controls="collapsingSummary">
+    <div class="section d-flex flex-wrap justify-content-between">
+      <div class="d-flex align-items-center">
+        <p class="no-margin mr-10px"> Show order summary </p>
+        <i class="fa fa-chevron-down" aria-hidden="true"></i>
+      </div>
+      <p class="no-margin" id="order_total_display_mobile_1"> <b> $<%= @order_total %> </b> </p>
+    </div>
+  </div>
+  <div class="collapse" id="collapsingSummary">
+    <% @order_items.each do |order_item| %>
+      <div class="section d-flex mb-3">
+        <div class="col-2">
+          <%= cl_image_tag order_item.product.photos.first.key, class: "cart-index-image" %>
+        </div>
+        <div class="col-10 d-flex flex-wrap justify-content-between">
+          <div>
+            <p class="no-margin px-2"><%= order_item.product.name %></p>
+            <p class="no-margin px-2"><%= order_item.product.size %></p>
+          </div>
+          <div class="text-right">
+            <p> $<%= order_item.price * order_item.quantity %></p>
+          </div>
+        </div>
+      </div>
+    <% end %>
+    <div class="section d-flex flex-wrap justify-content-between">
+      <p> Subtotal: </p>
+      <p> $<%= @order_subtotal %> </p>
+    </div>
+    <div class="section d-flex flex-wrap justify-content-between">
+      <p> Shipping fee: </p>
+      <p id="shipping_total_display_mobile"> $<%= @order.delivery_fee %> </p>
+    </div>
+    <div class="section d-flex flex-wrap justify-content-between">
+      <p class="no-margin"> <b> Total: </b> </p>
+      <p class="no-margin" id="order_total_display_mobile_2"> <b> $<%= @order_total %> </b> </p>
+    </div>
+  </div>
+</div>
+<%# Order Forms, New & Edit, Always Render %>
+<div class="d-flex flex-wrap">
+  <%# Order Form %>
+  <div class="col-12 col-md-6 p-4 p-md-5">
+    <%= simple_form_for(@order, data: { turbo: "false"}) do |f| %>
+      <p> Contact Information </p>
+      <%= f.input :contact_email, required: true %>
+      <%= f.input :contact_number, required: true %>
+      <p> Delivery Information </p>
+      <%= f.input :delivery_method,as: :select, collection: ["Shipping", "Hand Delivery"], include_blank: false, include_hidden: false %>
+      <div id="shipping-information-container">
+        <%= f.simple_fields_for :delivery_address do |p| %>
+          <%= p.input :first_name, required: true %>
+          <%= p.input :last_name, required: true %>
+          <%= p.input :country, required: true %>
+          <%= p.input :region, required: true %>
+          <%= p.input :city, required: true %>
+          <%= p.input :address_line_1, required: true %>
+          <%= p.input :address_line_2, required: false %>
+          <%= p.input :postal_code, required: true %>
+        <% end %>
+      </div>
+      <%= f.submit 'Proceed to Payment', class: "button primary-button wide-button" %>
+    <% end %>
+  </div>
+  <%# Order Items Summary %>
+  <div class="col-12 col-md-6 d-none d-md-block p-4 p-md-5">
+    <div class="d-none d-md-block">
+      <% @order_items.each do |order_item| %>
+        <div class="section d-flex mb-3">
+          <div class="col-2">
+            <%= cl_image_tag order_item.product.photos.first.key, class: "cart-index-image" %>
+          </div>
+          <div class="col-10 d-flex flex-wrap justify-content-between">
+            <div>
+              <p class="no-margin px-2"><%= order_item.product.name %></p>
+              <p class="no-margin px-2"><%= order_item.product.size %></p>
+            </div>
+            <div class="text-right">
+              <p> $<%= order_item.price * order_item.quantity %></p>
+            </div>
+          </div>
+        </div>
+      <% end %>
+      <div class="section d-flex flex-wrap justify-content-between">
+        <p> Subtotal: </p>
+        <p> $<%= @order_subtotal %> </p>
+      </div>
+      <div class="section d-flex flex-wrap justify-content-between">
+        <p> Shipping fee: </p>
+        <p id="shipping_total_display_desktop"> $<%= @order.delivery_fee %> </p>
+      </div>
+      <div class="section d-flex flex-wrap justify-content-between">
+        <h5> <b> Total: </b> </h5>
+        <h5 id="order_total_display_desktop"> <b> $<%= @order_total %> </b> </h5>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var delivery_method_input_field = document.getElementById("order_delivery_method");
+    var shipping_information_fields_container = document.getElementById("shipping-information-container");
+    var shipping_total_display_desktop = document.getElementById("shipping_total_display_desktop");
+    var shipping_total_display_mobile = document.getElementById("shipping_total_display_mobile");
+    var order_total_display_desktop = document.getElementById("order_total_display_desktop");
+    var order_total_display_mobile_1 = document.getElementById("order_total_display_mobile_1");
+    var order_total_display_mobile_2 = document.getElementById("order_total_display_mobile_2");
+
+    function updateDisplay(isHandDelivery) {
+      shipping_information_fields_container.style.display = isHandDelivery ? "none" : "block";
+      shipping_total_display_desktop.innerHTML = isHandDelivery ? "$0" : "$<%= @order_delivery_fee %>";
+      shipping_total_display_mobile.innerHTML = isHandDelivery ? "$0" : "$<%= @order_delivery_fee %>";
+      order_total_display_desktop.innerHTML = isHandDelivery ? `<b>$<%= @order_subtotal %></b>` : `<b>$<%= @order_total %></b>`;
+      order_total_display_mobile_1.innerHTML = isHandDelivery ? `<b>$<%= @order_subtotal %></b>` : `<b>$<%= @order_total %></b>`;
+      order_total_display_mobile_2.innerHTML = isHandDelivery ? `<b>$<%= @order_subtotal %></b>` : `<b>$<%= @order_total %></b>`;
+    }
+
+    updateDisplay(delivery_method_input_field.value === "Hand Delivery");
+    delivery_method_input_field.addEventListener('change', function (event) {
+      updateDisplay(delivery_method_input_field.value === "Hand Delivery");
+    });
+  }, false);
+</script>

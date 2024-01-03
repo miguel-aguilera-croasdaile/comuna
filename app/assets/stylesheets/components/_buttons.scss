@@ -1,0 +1,31 @@
+.button {
+  padding: 10px;
+  border-radius: $border-radius;
+}
+
+.button.mg{
+  margin-bottom: 15px;
+}
+
+.wide-button {
+  width: 100%;
+}
+
+.primary-button {
+  color: $white;
+  background-color: $black;
+  border: 1px solid $primary;
+  border-radius: $border-radius;
+  transition: background-color 0.25s ease-in;
+}
+
+.primary-button:hover{
+  background-color: black;
+}
+
+.secondary-button {
+  color: $black;
+  background-color: $white;
+  border: 1px solid $primary;
+  border-radius: $border-radius;
+}

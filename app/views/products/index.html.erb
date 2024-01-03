@@ -1,0 +1,42 @@
+<div class="p-2 p-md-5">
+  <% if @products.any? %>
+    <%# prod index header  %>
+    <div class="section p-3">
+      <p class="no-margin text-center"> Viewing <%= @query %> </p>
+    </div>
+    <div class="section d-flex flex-wrap justify-content-between p-2 p-md-3">
+      <p class="no-margin"> Sort By: Featured </p>
+      <p class="no-margin"> <%= @products.count %> products </p>
+    </div>
+    <%# prod index body  %>
+    <div class="section d-flex flex-wrap no-margin">
+      <% @products.each do |product| %>
+        <div class="product-card-wrapper p-2 p-md-3 col-6 col-xs-6 col-sm-6 col-md-6 col-lg-4 col-xl-4">
+          <%= link_to product_path(product) do %>
+            <div class="product-card">
+              <%= cl_image_tag product.photos.first.key, class: "product-index-image" %>
+              <div class=" product-text">
+                <div class="d-flex justify-content-between">
+                  <p class="truncated-text"> <%= product.name %> </p>
+                  <p> <%= product.size %></p>
+                </div>
+                <% if product.available? %>
+                  <p> <%= humanized_money_with_symbol(product.price) %> </p>
+                <% else %>
+                  <p> <span class="badge badge-danger"> SOLD </span> </p>
+                <% end %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="p-2 p-md-5">
+      <p class="text-center"> No products found.</p>
+      <%= link_to products_path do %>
+        <p class="text-center"> Back to all products </p>
+      <% end %>
+    </div>
+  <% end %>
+</div>

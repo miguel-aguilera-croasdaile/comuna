@@ -1,0 +1,43 @@
+.sidebar-toggle {
+  float: left;
+}
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: -100vw;
+  width: 100%;
+  transition: 0.5s left ease-in-out;
+  z-index: 1000000000;
+  background-color: $white;
+  border-right: 1px;
+  height: 100%;
+  overflow-y: scroll;
+  }
+
+.sidebar-header{
+  min-height: 80px;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+}
+
+
+.close-btn {
+  font-size: 1.5rem;
+  background: transparent;
+  border-color: transparent;
+  color: black;
+}
+
+.special-sidebar{
+  z-index: 1001;
+  right: 0px;
+  top: 50%;
+  position: fixed;
+  background-color: rgb(124, 52, 52);
+  width: 500px;
+  padding: 20px;
+}

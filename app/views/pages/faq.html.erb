@@ -1,0 +1,14 @@
+<div class="section p-5">
+  <div class="col-12 d-flex justify-content-around text-align-center">
+    Frequently Asked Questions
+  </div>
+</div>
+<div class="section px-5 py-2">
+  <ul>
+    <% Faker::Lorem.paragraphs(4).each do |p| %>
+      <li>
+        <p> <%= p %> </p>
+      </li>
+    <% end %>
+  </ul>
+</div>

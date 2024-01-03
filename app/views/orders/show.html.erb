@@ -1,0 +1,107 @@
+<div class="section d-flex flex-wrap">
+  <div class="col-12 col-md-6 p-4 p-md-5" id="order_left">
+    <p> Contact </p>
+    <p> <%= @order.contact_email %></p>
+    <p> <%= @order.contact_number %></p>
+    <p> Delivery Method </p>
+    <p> <%= @order.delivery_method %></p>
+    <% if @order.delivery_method == "Shipping" %>
+      <p> Shipping Address </p>
+      <p> <%= @order.delivery_address.address_line_1 %>, <%= @order.delivery_address.city %>, <%= @order.delivery_address.region %>, <%= @order.delivery_address.country %></p>
+    <% end %>
+    <% if @order.status == "PENDING" %>
+      <%= link_to "Edit Order Details", edit_order_path(@order) %>
+    <% end %>
+  </div>
+  <div class="col-12 col-md-6 p-4 p-md-5" id="order_right">
+    <div class="d-none d-md-block">
+      <% @order_items.each do |order_item| %>
+        <div class="section d-flex mb-3">
+          <div class="col-2">
+            <%= cl_image_tag order_item.product.photos.first.key, class: "cart-index-image" %>
+          </div>
+          <div class="col-10 d-flex flex-wrap justify-content-between">
+            <div>
+              <p class="no-margin px-2"><%= order_item.product.name %></p>
+              <p class="no-margin px-2"><%= order_item.product.size %></p>
+            </div>
+            <div class="text-right">
+              <p> $<%= order_item.price * order_item.quantity %></p>
+            </div>
+          </div>
+        </div>
+      <% end %>
+      <div class="section d-flex flex-wrap justify-content-between">
+        <p> Subtotal: </p>
+        <p> $<%= @order_subtotal %> </p>
+      </div>
+      <div class="section d-flex flex-wrap justify-content-between">
+        <p> Shipping fee: </p>
+        <p id="shipping_total_display_desktop"> $<%= @order.delivery_fee %> </p>
+      </div>
+      <div class="section d-flex flex-wrap justify-content-between">
+        <h5> <b> Total: </b> </h5>
+        <h5 id="order_total_display_desktop"> <b> $<%= @order_total %> </b> </h5>
+      </div>
+    </div>
+    <% if @order.status == "PENDING" %>
+      <div id="paypal-button-container">
+      </div>
+    <% end %>
+  </div>
+</div>
+<script src=<%="https://www.paypal.com/sdk/js?client-id=#{ENV['PAYPAL_CLIENT_ID']}&currency=USD"%>></script>
+<script>
+  paypal.Buttons({
+    createOrder: async function () {
+      try {
+        const request = await fetch("/create_paypal_order", {
+          method: "post",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            storeOrderID: <%= @order.id %>,
+          }),
+        });
+
+        if (!request.ok) {
+          throw new Error(`Failed to create PayPal order. Status: ${request.status}`);
+        }
+
+        const paypalApiResponse = await request.json();
+        return paypalApiResponse.order_id;
+      } catch (error) {
+        console.error("Error creating PayPal order:", error);
+        alert("An unexpected error occurred while processing your order. Please try again later.");
+      }
+    },
+    onApprove: async function (data) {
+      try {
+        const response = await fetch("/capture_paypal_order", {
+          method: "post",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            paypalOrderID: data.orderID,
+            storeOrderID: <%= @order.id%>
+          }),
+        });
+
+        if (!response.ok) {
+          throw new Error(`Failed to capture PayPal order. Status: ${response.status}`);
+        }
+
+        const paypalApiResponse = await response.json();
+        if (paypalApiResponse.status == "COMPLETED") {
+          window.location.href = "/confirmation?transaction_id=" + paypalApiResponse.transaction_id;
+        }
+      } catch (error) {
+        alert("An unexpected internal error has occurred. Try again later.");
+        console.error(error);
+      }
+    }
+  })
+  .render("#paypal-button-container");
+</script>

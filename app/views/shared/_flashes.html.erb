@@ -1,14 +1,23 @@
 <% if notice %>
-  <div class="alert alert-info alert-dismissible fade show m-1" role="alert">
+  <div class="notification alert alert-info px-4 px-md-5" id="alert" role="alert">
     <%= notice %>
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+    <button type="button" class="alert-button btn-close" id="alert-button" aria-label="Close">
     </button>
   </div>
 <% end %>
 <% if alert %>
-  <div class="alert alert-warning alert-dismissible fade show m-1" role="alert">
+  <div class="notification alert alert-danger px-4 px-md-5" id="alert" role="alert">
     <%= alert %>
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+    <button type="button" class="alert-button btn-close" id="alert-button" aria-label="Close">
     </button>
   </div>
 <% end %>
+<script>
+  var alert_custom = document.getElementById("alert");
+  var button = document.getElementById("alert-button");
+  if (alert_custom !== null) {
+    button.onclick = function(){
+      alert_custom.style.display = "none";
+    };
+  }
+</script>

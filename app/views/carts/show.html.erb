@@ -1,0 +1,105 @@
+<% if @cart.cart_items.any? %>
+  <div class="cart-wrapper p-4 p-md-5">
+    <div class="section">
+      <div class="col-12 d-flex justify-content-around text-align-center">
+        Shopping Cart
+      </div>
+      <hr>
+    </div>
+    <%# Cart Header Row %>
+    <div class="section d-none d-md-flex">
+      <div class="col-6">
+        Product
+      </div>
+      <div class="col-3">
+        Quantity
+      </div>
+      <div class="col-3 text-right">
+        Price
+      </div>
+    </div>
+    <%# Cart Body, Deskop and Large %>
+    <div class="section d-none d-md-flex flex-wrap">
+      <% @available_products.each do |cart_item| %>
+        <div class="cart-item d-flex flex-wrap">
+          <div class="col-6 d-flex flex-wrap">
+            <div class="col-2">
+              <%= link_to product_path(cart_item.product) do %>
+                <div class="cart-index-image">
+                  <%= cl_image_tag cart_item.product.photos.first.key, class: "cart-index-image" %>
+                </div>
+              <% end %>
+            </div>
+            <div class="col-9">
+              <%= link_to product_path(cart_item.product) do %>
+                <p class="px-2"><%= cart_item.product.name %></p>
+                <p class="px-2"><%= cart_item.product.size %> <%= cart_item.product.color %></p>
+              <% end %>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <p><%= cart_item.quantity %> - <%= link_to 'Remove', cart_cart_item_path(@cart, cart_item), data: {turbo_method: :delete, turbo_confirm: 'Are you sure?'} %></p>
+          </div>
+          <div class="col-md-3 text-right">
+            <p> <%= humanized_money_with_symbol(cart_item.price * cart_item.quantity) %> </p>
+          </div>
+        </div>
+      <% end %>
+    </div>
+    <%# Cart Body, Mobile and Small %>
+    <div class="section d-md-none">
+      <% @available_products.each_with_index do |cart_item, index| %>
+        <div class="cart-item d-flex flex-wrap">
+          <div class="col-3">
+            <%= link_to product_path(cart_item.product) do %>
+              <%= cl_image_tag cart_item.product.photos.first.key, class: "cart-index-image" %>
+            <% end %>
+          </div>
+          <div class="col-9">
+            <div class="d-flex justify-content-between">
+              <p class="px-2"> <%= cart_item.product.name %> </p>
+              <p> <%= humanized_money_with_symbol(cart_item.product.price) %> </p>
+            </div>
+            <div class="d-flex justify-content-between">
+              <p class="px-2">x<%= cart_item.quantity %></p>
+              <p><%= link_to 'Remove', cart_cart_item_path(@cart, cart_item), data: {turbo_method: :delete, turbo_confirm: 'Remove product from cart?'} %></p>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+    <hr>
+    <div class="d-flex">
+      <div class="col-12 text-right">
+        <p> Taxes and shipping calculated at checkout </p>
+        <p> Subtotal: <%= humanized_money_with_symbol(@cart_subtotal) %> </p>
+      </div>
+    </div>
+    <div class="d-flex">
+      <div class="col-8 d-none d-md-block">
+      </div>
+      <div class="col-12 col-md-4 text-right">
+        <%= link_to new_order_path(), data: {turbo: "false"} do %>
+          <button class="button primary-button wide-button mb-3">
+            Continue to Checkout
+          </button>
+        <% end %>
+        <%= link_to products_path do %>
+          <p class="no-margin"> Continue shopping </p>
+        <% end %>
+      </div>
+    </div>
+  </div>
+<% else %>
+  <div class="cart-wrapper p-5">
+    <p class="p-5 text-center no-margin"> Shopping Cart </p>
+    <div class="p-5">
+      <p class="text-center"> Your shopping cart is empty.</p>
+      <div class="d-flex flex-wrap justify-content-center">
+        <%= link_to products_path do %>
+          <div class="button primary-button wide-button"> Continue shopping </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+<% end %>

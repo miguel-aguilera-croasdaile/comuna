@@ -1,0 +1,13 @@
+<div class="cart-wrapper p-5">
+  <h4 class="text-center no-margin"> Thank you for your purchase! </h4>
+  <hr>
+  <div>
+    <p>Order Summary</p>
+    <p><%= @order.id %></p>
+    <p><%= @order.created_at %></p>
+    <p><%= @order.status %></p>
+    <p><%= @order.checkout_session_id %></p>
+    <p><%= @order.paypal_transaction_id %></p>
+    <%= link_to "view order", order_path(@order) %>
+  </div>
+</div>
